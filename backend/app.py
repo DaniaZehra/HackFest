@@ -5,8 +5,13 @@ import time
 import torch
 from functools import lru_cache
 import hashlib
+from flask import Flask
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
+
 
 # Load model
 pipe = DiffusionPipeline.from_pretrained(
@@ -26,7 +31,7 @@ prompt_cache = {}
 @lru_cache(maxsize=16)
 def generate_image_bytes(prompt_hash):
     prompt = prompt_cache[prompt_hash]
-    image = pipe(prompt=prompt, num_inference_steps=4, guidance_scale=7.5).images[0]
+    image = pipe(prompt=prompt, num_inference_steps=7, guidance_scale=7.5).images[0]
     img_io = BytesIO()
     image.save(img_io, 'PNG')
     return img_io.getvalue()  # Only store raw bytes
