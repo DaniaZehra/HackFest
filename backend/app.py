@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_file
+from recommender import recommend 
 from diffusers import DiffusionPipeline
 from io import BytesIO
 import time
@@ -56,13 +57,26 @@ def generate_image():
         return send_file(
             img_io,
             mimetype='image/png',
-            as_attachment=True,
-            download_name='generated_image.png'
-        )
+             as_attachment=True,
+             download_name='generated_image.png'
+         )
 
     except Exception as e:
-        print("Error:", str(e))
-        return jsonify({"error": str(e)}), 500
+         print("Error:", str(e))
+         return jsonify({"error": str(e)}), 500
+@app.route('/recommend-outfit', methods=['POST'])
+def recommend_outfit():
+    data = request.get_json()
+    wardrobe = data.get("wardrobe")
+    occasion = data.get("occasion")
 
+    if not wardrobe or not occasion:
+        return jsonify({"error": "Both 'wardrobe' and 'occasion' are required"}), 400
+
+    try:
+        result = recommend(wardrobe, occasion)
+        return jsonify({"recommendation": result})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
