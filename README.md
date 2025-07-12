@@ -54,7 +54,7 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 14 with App Router
 - **Language**: TypeScript
@@ -101,7 +101,7 @@ fashion-recommender/
 - **Animations**: Smooth transitions and micro-interactions
 - **Typography**: Inter font family
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - [ ] AI-powered virtual try-on
 - [ ] Integration with e-commerce platforms
