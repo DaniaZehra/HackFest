@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Heart, Star, ShoppingBag, Sparkles, Eye, MessageCircle, Wand2, Palette } from 'lucide-react'
+import { Heart, Star, ShoppingBag, Sparkles, Eye, MessageCircle, Wand2 } from 'lucide-react'
 
 interface User {
   name: string
@@ -21,25 +21,30 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
   const [selectedOccasion, setSelectedOccasion] = useState('casual')
   const [isGenerating, setIsGenerating] = useState(false)
 
+  // Add state for chat in Generate Outfits tab
+  const [chatMessages, setChatMessages] = useState<{role: 'user' | 'ai', content: string}[]>([])
+  const [chatInput, setChatInput] = useState('')
+  const [isChatLoading, setIsChatLoading] = useState(false)
+
   const tabs = [
     { id: 'browse', label: 'Browse Recommendations', icon: Eye },
     { id: 'chat', label: 'Chat with AI', icon: MessageCircle },
-    { id: 'generated', label: 'Generated Outfits', icon: Sparkles },
+    { id: 'generate', label: 'Generate Outfits', icon: Sparkles },
   ]
 
   const styleOptions = [
-    { id: 'bohemian', label: 'Bohemian'},
-    { id: 'minimalist', label: 'Minimalist'},
-    { id: 'vintage', label: 'Vintage'},
-    { id: 'streetwear', label: 'Streetwear'},
-    { id: 'elegant', label: 'Elegant'},
+    { id: 'bohemian', label: 'Bohemian' },
+    { id: 'minimalist', label: 'Minimalist' },
+    { id: 'vintage', label: 'Vintage' },
+    { id: 'streetwear', label: 'Streetwear' },
+    { id: 'elegant', label: 'Elegant' },
   ]
 
   const occasions = [
-    { id: 'casual', label: 'Casual Day'},
-    { id: 'work', label: 'Work Meeting'},
-    { id: 'party', label: 'Party'},
-    { id: 'formal', label: 'Formal Event'},
+    { id: 'casual', label: 'Casual Day' },
+    { id: 'work', label: 'Work Meeting' },
+    { id: 'party', label: 'Party' },
+    { id: 'formal', label: 'Formal Event' },
   ]
 
   const styleColors: Record<string, string> = {
@@ -94,41 +99,8 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
     }
   ]
 
-  // Generated outfits (from AIStylist)
-  const generatedOutfits = [
-    {
-      id: 1,
-      title: 'Bohemian Summer Dream',
-      description: 'A flowy floral dress paired with layered jewelry and ankle boots',
-      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=500&fit=crop',
-      style: 'bohemian',
-      confidence: 95,
-      items: ['Floral Maxi Dress', 'Layered Necklaces', 'Ankle Boots', 'Wide Brim Hat'],
-      price: 234
-    },
-    {
-      id: 2,
-      title: 'Minimalist Office Chic',
-      description: 'Clean lines with a white blouse, tailored pants, and statement watch',
-      image: 'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?w=400&h=500&fit=crop',
-      style: 'minimalist',
-      confidence: 92,
-      items: ['White Blouse', 'Tailored Pants', 'Statement Watch', 'Loafers'],
-      price: 189
-    },
-    {
-      id: 3,
-      title: 'Vintage Evening Glamour',
-      description: 'Retro-inspired dress with classic accessories and red lipstick',
-      image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop',
-      style: 'vintage',
-      confidence: 88,
-      items: ['Retro Dress', 'Pearl Necklace', 'Red Lipstick', 'Heels'],
-      price: 312
-    }
-  ]
 
-  const filteredRecommendations = recommendations.filter(rec => 
+  const filteredRecommendations = recommendations.filter(rec =>
     selectedOccasion === 'all' || rec.category === selectedOccasion
   )
 
@@ -141,6 +113,21 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
     }, 3000)
   }
 
+  // Handler for sending chat message
+  const handleSendChat = async () => {
+    if (!chatInput.trim()) return
+    const userMsg = { role: 'user' as const, content: chatInput }
+    setChatMessages((prev) => [...prev, userMsg])
+    setIsChatLoading(true)
+    setChatInput('')
+    // Simulate AI response (replace with API call later)
+    setTimeout(() => {
+      const aiMsg = { role: 'ai' as const, content: "Here's an AI-generated outfit based on your prompt! (Integration coming soon)" }
+      setChatMessages((prev) => [...prev, aiMsg])
+      setIsChatLoading(false)
+    }, 2000)
+  }
+
   const renderBrowseTab = () => (
     <div className="space-y-6">
       {/* Occasion Filter */}
@@ -151,11 +138,10 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
             <button
               key={occasion.id}
               onClick={() => setSelectedOccasion(occasion.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                selectedOccasion === occasion.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${selectedOccasion === occasion.id
                   ? 'bg-primary-100 text-primary-700 border border-primary-300'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+                }`}
             >
               <span className={`w-3 h-3 rounded-full mr-2 ${occasionColors[occasion.id]}`}></span>
               <span className="font-medium">{occasion.label}</span>
@@ -193,9 +179,9 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
                   <span className="text-sm text-gray-600">{recommendation.rating}</span>
                 </div>
               </div>
-              
+
               <p className="text-gray-600 text-sm mb-4">{recommendation.description}</p>
-              
+
               {/* Items */}
               <div className="mb-4">
                 <p className="text-xs font-medium text-gray-500 mb-2">INCLUDES:</p>
@@ -244,11 +230,10 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
             <button
               key={style.id}
               onClick={() => setSelectedStyle(style.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                selectedStyle === style.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${selectedStyle === style.id
                   ? 'bg-primary-100 text-primary-700 border border-primary-300'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+                }`}
             >
               <span className={`w-3 h-3 rounded-full mr-2 ${styleColors[style.id]}`}></span>
               <span className="font-medium">{style.label}</span>
@@ -268,7 +253,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
             <p className="text-gray-600 mb-4">
               Describe your occasion, mood, or style preferences and get personalized recommendations
             </p>
-            
+
             <div className="space-y-4">
               <textarea
                 value={prompt}
@@ -277,7 +262,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
                 className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                 rows={3}
               />
-              
+
               <div className="flex items-center justify-between">
                 <button
                   onClick={handleGenerate}
@@ -314,71 +299,51 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {generatedOutfits.map((outfit) => (
-          <div
-            key={outfit.id}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+      {/* Chatbot Interface */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <h4 className="text-lg font-semibold mb-4">Chat with AI Stylist</h4>
+        <div className="flex flex-col space-y-4 max-h-72 overflow-y-auto mb-4">
+          {chatMessages.length === 0 && (
+            <div className="text-gray-400 text-sm">Start the conversation by describing your style, occasion, or what you want to see!</div>
+          )}
+          {chatMessages.map((msg, idx) => (
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}> 
+              <div className={`rounded-lg px-4 py-2 max-w-xs ${msg.role === 'user' ? 'bg-purple-100 text-purple-900' : 'bg-gray-100 text-gray-700'}`}>{msg.content}</div>
+            </div>
+          ))}
+          {isChatLoading && (
+            <div className="flex justify-start">
+              <div className="rounded-lg px-4 py-2 bg-gray-100 text-gray-500 animate-pulse">AI is thinking...</div>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="text"
+            value={chatInput}
+            onChange={e => setChatInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') handleSendChat() }}
+            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            placeholder="Type your prompt (e.g. 'Show me a vintage party look')"
+            disabled={isChatLoading}
+          />
+          <button
+            onClick={handleSendChat}
+            disabled={isChatLoading || !chatInput.trim()}
+            className="btn-primary px-4 py-2 disabled:opacity-50"
           >
-            {/* Image */}
-            <div className="relative h-64 overflow-hidden">
-              <img
-                src={outfit.image}
-                alt={outfit.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              <div className="absolute top-3 left-3 bg-white/90 px-2 py-1 rounded text-xs font-medium">
-                {outfit.confidence}% Match
-              </div>
-            </div>
+            Send
+          </button>
+        </div>
+      </div>
 
-            {/* Content */}
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-gray-900">{outfit.title}</h3>
-                <span className="text-lg font-bold text-gray-900">${outfit.price}</span>
-              </div>
-              
-              <p className="text-gray-600 text-sm mb-4">{outfit.description}</p>
-              
-              {/* Items */}
-              <div className="mb-4">
-                <p className="text-xs font-medium text-gray-500 mb-2">OUTFIT INCLUDES:</p>
-                <div className="flex flex-wrap gap-1">
-                  {outfit.items.map((item, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm text-gray-600">{outfit.confidence}%</span>
-                  </div>
-                </div>
-                <div className="flex space-x-2">
-                  <button className="btn-secondary flex items-center space-x-2">
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Ask AI</span>
-                  </button>
-                  <button className="btn-primary flex items-center space-x-2">
-                    <Palette className="w-4 h-4" />
-                    <span>Try On</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+      {/* Visualization Placeholder */}
+      <div className="bg-gray-50 rounded-xl p-6 border border-dashed border-gray-300 text-center">
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <Sparkles className="w-8 h-8 text-purple-400 mb-2" />
+          <span className="text-gray-700 font-medium">Outfit visualizations will appear here after you chat with the AI!</span>
+          <span className="text-xs text-gray-400">(Integrate your model to generate images or outfit cards)</span>
+        </div>
       </div>
     </div>
   )
@@ -389,7 +354,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
         return renderBrowseTab()
       case 'chat':
         return renderChatTab()
-      case 'generated':
+      case 'generate':
         return renderGeneratedTab()
       default:
         return renderBrowseTab()
@@ -417,11 +382,10 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
-                activeTab === tab.id
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${activeTab === tab.id
                   ? 'bg-primary-100 text-primary-700'
                   : 'text-gray-600 hover:bg-gray-100'
-              }`}
+                }`}
             >
               <tab.icon className="w-4 h-4" />
               <span className="font-medium">{tab.label}</span>
@@ -442,7 +406,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Style Analysis</h3>
             <p className="text-gray-700 mb-3">
-              Based on your {user.style} preferences and ${user.budget} budget, I've curated these looks that 
+              Based on your {user.style} preferences and ${user.budget} budget, I've curated these looks that
               perfectly match your aesthetic. Your style confidence has increased by 15% this month!
             </p>
             <button className="btn-primary">
