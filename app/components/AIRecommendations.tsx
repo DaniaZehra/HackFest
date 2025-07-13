@@ -285,26 +285,6 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
 
   const renderChatTab = () => (
     <div className="space-y-6">
-      {/* Style Preferences */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-warm-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Style Preferences</h3>
-        <div className="flex flex-wrap gap-3 pb-2">
-          {styleOptions.map((style) => (
-            <button
-              key={style.id}
-              onClick={() => setSelectedStyle(style.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-base border
-                ${selectedStyle === style.id
-                  ? 'bg-warm-100 border-warm-300 text-warm-700 shadow-warm-md scale-105'
-                  : 'bg-white border-warm-200 text-warm-500 hover:bg-warm-50 hover:text-warm-700'}
-              `}
-            >
-              <style.icon className={`w-5 h-5 ${selectedStyle === style.id ? 'text-warm-400' : 'text-warm-300'}`} />
-              <span className="font-medium">{style.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* AI Chat Interface */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
