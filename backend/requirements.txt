@@ -1,0 +1,6 @@
+Flask
+flask-cors
+torch
+diffusers
+python-dotenv
+google-generativeai
