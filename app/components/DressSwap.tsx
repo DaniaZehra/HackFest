@@ -80,20 +80,17 @@ export default function DressSwap() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Dress Swap Community</h2>
           <p className="text-gray-600 mt-2">Swap clothes with fashion lovers in your area</p>
         </div>
-        <div className="flex items-center space-x-2 bg-green-50 px-4 py-2 rounded-lg">
-          <Users className="w-5 h-5 text-green-600" />
-          <span className="text-green-700 font-medium">Active Community</span>
-        </div>
+        {/* Optionally, add a badge/icon here if needed */}
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Available Swaps</p>
@@ -104,7 +101,7 @@ export default function DressSwap() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Nearby Users</p>
@@ -115,7 +112,7 @@ export default function DressSwap() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Successful Swaps</p>
@@ -126,7 +123,7 @@ export default function DressSwap() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Your Rating</p>
@@ -140,14 +137,14 @@ export default function DressSwap() {
       </div>
 
       {/* Search and Filter */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-2xl shadow-md p-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-warm-400 w-5 h-5 transition-base" />
             <input
               type="text"
               placeholder="Search for items or users..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-warm-200 rounded-lg focus:ring-2 focus:ring-warm-400 focus:border-transparent transition-base shadow-sm hover:shadow-md"
             />
           </div>
           <div className="flex space-x-2">
@@ -155,11 +152,11 @@ export default function DressSwap() {
               <button
                 key={filter.id}
                 onClick={() => setSelectedFilter(filter.id)}
-                className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                  selectedFilter === filter.id
-                    ? 'bg-primary-100 text-primary-700 border border-primary-300'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-base border
+                  ${selectedFilter === filter.id
+                    ? 'bg-warm-100 border-warm-300 text-warm-700 shadow-warm-md scale-105'
+                    : 'bg-white border-warm-200 text-warm-500 hover:bg-warm-50 hover:text-warm-700'}
+                `}
               >
                 {filter.label}
               </button>
@@ -173,7 +170,7 @@ export default function DressSwap() {
         {availableSwaps.map((swap, index) => (
           <div
             key={swap.id}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+            className="card-warm overflow-hidden hover:shadow-lg hover-scale transition-base"
           >
             <div className="p-6">
               <div className="flex items-start space-x-6">
@@ -182,7 +179,7 @@ export default function DressSwap() {
                   <img
                     src={swap.item.image}
                     alt={swap.item.name}
-                    className="w-32 h-40 object-cover rounded-lg"
+                    className="w-32 h-40 object-cover rounded-lg shadow-md transition-base hover:scale-105 hover:shadow-lg"
                   />
                   <div className="absolute top-2 left-2 bg-white/90 px-2 py-1 rounded text-xs font-medium">
                     {swap.item.size}
@@ -193,15 +190,15 @@ export default function DressSwap() {
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                      <h3 className="text-xl font-semibold text-warm-900 mb-1">
                         {swap.item.name}
                       </h3>
-                      <p className="text-gray-600 text-sm mb-2">{swap.item.brand}</p>
-                      <p className="text-gray-700">{swap.item.description}</p>
+                      <p className="text-warm-600 text-sm mb-2">{swap.item.brand}</p>
+                      <p className="text-warm-800">{swap.item.description}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm text-gray-500">{swap.distance}</span>
-                      <p className="text-xs text-gray-400">{swap.posted}</p>
+                      <span className="text-sm text-warm-500">{swap.distance}</span>
+                      <p className="text-xs text-warm-400">{swap.posted}</p>
                     </div>
                   </div>
 
@@ -210,27 +207,27 @@ export default function DressSwap() {
                     <img
                       src={swap.user.avatar}
                       alt={swap.user.name}
-                      className="w-10 h-10 rounded-full"
+                      className="w-10 h-10 rounded-full border-2 border-warm-300 shadow-md transition-base hover:scale-110 hover:shadow-lg"
                     />
                     <div>
-                      <p className="font-medium text-gray-900">{swap.user.name}</p>
+                      <p className="font-medium text-warm-900">{swap.user.name}</p>
                       <div className="flex items-center space-x-2">
-                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-sm text-gray-600">{swap.user.rating}</span>
-                        <span className="text-sm text-gray-500">•</span>
-                        <span className="text-sm text-gray-500">{swap.user.location}</span>
+                        <Star className="w-4 h-4 text-accent-amber fill-current" />
+                        <span className="text-sm text-warm-700">{swap.user.rating}</span>
+                        <span className="text-sm text-warm-400">•</span>
+                        <span className="text-sm text-warm-400">{swap.user.location}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Wants */}
                   <div className="mb-4">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Looking for:</p>
+                    <p className="text-sm font-medium text-warm-700 mb-2">Looking for:</p>
                     <div className="flex flex-wrap gap-2">
                       {swap.wants.map((want, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full"
+                          className="px-3 py-1 bg-warm-100 text-warm-900 text-sm rounded-full transition-base hover:bg-warm-200"
                         >
                           {want}
                         </span>
@@ -240,11 +237,11 @@ export default function DressSwap() {
 
                   {/* Actions */}
                   <div className="flex items-center space-x-3">
-                    <button className="btn-primary flex items-center space-x-2">
+                    <button className="btn-primary flex items-center space-x-2 hover-scale">
                       <MessageCircle className="w-4 h-4" />
                       <span>Start Swap</span>
                     </button>
-                    <button className="btn-secondary flex items-center space-x-2">
+                    <button className="btn-secondary flex items-center space-x-2 hover-scale">
                       <Heart className="w-4 h-4" />
                       <span>Save</span>
                     </button>

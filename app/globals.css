@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-warm-50 to-warm-100 text-warm-900 antialiased;
+  }
+  
+  * {
+    @apply transition-colors duration-300 ease-in-out;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-warm-500 to-warm-600 hover:from-warm-600 hover:to-warm-700 
+           text-white font-medium py-3 px-6 rounded-xl shadow-warm-md 
+           transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-warm-lg
+           active:scale-95 focus:outline-none focus:ring-4 focus:ring-warm-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-warm-50 text-warm-700 font-medium py-3 px-6 rounded-xl 
+           shadow-warm-sm border border-warm-200 hover:border-warm-300
+           transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-warm-md
+           active:scale-95 focus:outline-none focus:ring-4 focus:ring-warm-200;
+  }
+  
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-orchid to-accent-plum hover:from-accent-plum hover:to-accent-orchid
+           text-white font-medium py-3 px-6 rounded-xl shadow-warm-md 
+           transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-warm-lg
+           active:scale-95 focus:outline-none focus:ring-4 focus:ring-accent-orchid/20;
+  }
+  
+  .card {
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-warm-md border border-warm-200/50 
+           p-6 transition-all duration-300 hover:shadow-warm-lg hover:border-warm-300/50
+           hover:bg-white/95 hover:-translate-y-1;
+  }
+
+  .card-warm {
+    @apply bg-warm-50/90 backdrop-blur-sm rounded-2xl shadow-warm-md border border-warm-200/50 
+           p-6 transition-all duration-300 hover:shadow-warm-lg hover:border-warm-300/50
+           hover:bg-warm-50/95 hover:-translate-y-1;
+  }
+
+  .card-glass {
+    @apply bg-white/70 backdrop-blur-md rounded-2xl shadow-warm-lg border border-warm-200/30 
+           p-6 transition-all duration-300 hover:shadow-warm-xl hover:border-warm-300/40
+           hover:bg-white/80 hover:-translate-y-1;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 25%, #f5d0fe 50%, #f0abfc 75%, #e879f9 100%);
+  }
+
+  .warm-gradient-subtle {
+    background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+  }
+
+  .warm-gradient-accent {
+    background: linear-gradient(135deg, #f0abfc 0%, #e879f9 100%);
+  }
+
+  .warm-gradient-bg {
+    @apply bg-gradient-to-r from-warm-100 to-warm-300;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-warm-700 to-warm-500 bg-clip-text text-transparent;
+  }
+
+  .text-shadow-warm {
+    text-shadow: 0 2px 4px rgba(168, 85, 247, 0.1);
+  }
+
+  .fashion-card {
+    @apply bg-white/80 backdrop-blur-md rounded-3xl shadow-warm-lg border border-warm-200/40 
+           p-8 transition-all duration-500 hover:shadow-warm-xl hover:border-warm-300/60
+           hover:bg-white/90 hover:-translate-y-2 hover:rotate-1;
+  }
+
+  .input-warm {
+    @apply bg-white/90 border-2 border-warm-200 rounded-xl px-4 py-3 
+           focus:border-warm-400 focus:ring-4 focus:ring-warm-200/50 focus:outline-none
+           transition-all duration-300 placeholder:text-warm-400;
+  }
+}
+
+@layer utilities {
+  .text-gradient-warm {
+    @apply bg-gradient-to-r from-warm-600 to-warm-800 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-accent-orchid to-accent-plum bg-clip-text text-transparent;
+  }
+
+  .shadow-warm-sm {
+    box-shadow: 0 1px 3px 0 rgba(168, 85, 247, 0.1), 0 1px 2px 0 rgba(168, 85, 247, 0.06);
+  }
+
+  .shadow-warm-md {
+    box-shadow: 0 4px 8px 0 rgba(168, 85, 247, 0.12), 0 2px 4px 0 rgba(168, 85, 247, 0.08);
+  }
+
+  .shadow-warm-lg {
+    box-shadow: 0 8px 16px 0 rgba(168, 85, 247, 0.15), 0 4px 8px 0 rgba(168, 85, 247, 0.1);
+  }
+
+  .shadow-warm-xl {
+    box-shadow: 0 12px 24px 0 rgba(168, 85, 247, 0.18), 0 6px 12px 0 rgba(168, 85, 247, 0.12);
+  }
+
+  .border-gradient-warm {
+    border-image: linear-gradient(135deg, #f0abfc, #e879f9) 1;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-warm-lg;
+  }
+
+  .hover-scale-sm {
+    @apply transition-transform duration-300 hover:scale-102;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  .hover-tilt {
+    @apply transition-transform duration-300 hover:rotate-1;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+  }
+
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
+  }
+
+  .glass-effect {
+    @apply bg-white/20 backdrop-blur-lg border border-white/30;
+  }
+
+  .warm-glow {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+
+  .warm-glow-hover {
+    @apply hover:shadow-warm-xl transition-all duration-300;
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bounceGentle {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fae8ff; /* warm-100 */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #f0abfc; /* warm-300 */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e879f9; /* warm-400 */
+}

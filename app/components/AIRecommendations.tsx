@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Heart, Star, ShoppingBag, Sparkles, Eye, MessageCircle, Wand2 } from 'lucide-react'
+import { Heart, Star, ShoppingBag, Sparkles, Eye, MessageCircle, Wand2, Sun, Briefcase, CalendarCheck, Square, Archive, Zap, Gem } from 'lucide-react'
 
 interface User {
   name: string
@@ -33,33 +33,26 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
   ]
 
   const styleOptions = [
-    { id: 'bohemian', label: 'Bohemian' },
-    { id: 'minimalist', label: 'Minimalist' },
-    { id: 'vintage', label: 'Vintage' },
-    { id: 'streetwear', label: 'Streetwear' },
-    { id: 'elegant', label: 'Elegant' },
+    { id: 'bohemian', label: 'Bohemian', icon: Sparkles },
+    { id: 'minimalist', label: 'Minimalist', icon: Square },
+    { id: 'vintage', label: 'Vintage', icon: Archive },
+    { id: 'streetwear', label: 'Streetwear', icon: Zap },
+    { id: 'elegant', label: 'Elegant', icon: Gem },
   ]
 
   const occasions = [
-    { id: 'casual', label: 'Casual Day' },
-    { id: 'work', label: 'Work Meeting' },
-    { id: 'party', label: 'Party' },
-    { id: 'formal', label: 'Formal Event' },
+    { id: 'casual', label: 'Casual Day', icon: Sun },
+    { id: 'work', label: 'Work Meeting', icon: Briefcase },
+    { id: 'party', label: 'Party', icon: Sparkles },
+    { id: 'formal', label: 'Formal Event', icon: CalendarCheck },
   ]
 
   const styleColors: Record<string, string> = {
-    bohemian: 'bg-green-400',
-    minimalist: 'bg-gray-400',
-    vintage: 'bg-yellow-500',
-    streetwear: 'bg-blue-500',
-    elegant: 'bg-purple-400',
-  }
-
-  const occasionColors: Record<string, string> = {
-    casual: 'bg-green-400',
-    work: 'bg-gray-500',
-    party: 'bg-pink-400',
-    formal: 'bg-blue-400',
+    bohemian: 'bg-warm-300',
+    minimalist: 'bg-warm-100',
+    vintage: 'bg-accent-amber',
+    streetwear: 'bg-warm-500',
+    elegant: 'bg-warm-400',
   }
 
   // Pre-curated recommendations (from RecommendationCard)
@@ -131,19 +124,20 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
   const renderBrowseTab = () => (
     <div className="space-y-6">
       {/* Occasion Filter */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-warm-200">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Choose Occasion</h3>
-        <div className="flex space-x-3 overflow-x-auto pb-2">
+        <div className="flex flex-wrap gap-3 pb-2">
           {occasions.map((occasion) => (
             <button
               key={occasion.id}
               onClick={() => setSelectedOccasion(occasion.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${selectedOccasion === occasion.id
-                  ? 'bg-primary-100 text-primary-700 border border-primary-300'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-base border
+                ${selectedOccasion === occasion.id
+                  ? 'bg-warm-100 border-warm-300 text-warm-700 shadow-warm-md scale-105'
+                  : 'bg-white border-warm-200 text-warm-500 hover:bg-warm-50 hover:text-warm-700'}
+              `}
             >
-              <span className={`w-3 h-3 rounded-full mr-2 ${occasionColors[occasion.id]}`}></span>
+              <occasion.icon className="w-5 h-5" />
               <span className="font-medium">{occasion.label}</span>
             </button>
           ))}
@@ -155,7 +149,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
         {filteredRecommendations.map((recommendation) => (
           <div
             key={recommendation.id}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+            className="card-warm overflow-hidden hover:shadow-lg hover-scale transition-base"
           >
             {/* Image */}
             <div className="relative h-64 overflow-hidden">
@@ -165,31 +159,31 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              <button className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white transition-colors">
-                <Heart className="w-5 h-5 text-gray-600" />
+              <button className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-warm-100 transition-base hover-scale">
+                <Heart className="w-5 h-5 text-warm-500" />
               </button>
             </div>
 
             {/* Content */}
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-gray-900">{recommendation.title}</h3>
+                <h3 className="text-lg font-semibold text-warm-900">{recommendation.title}</h3>
                 <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="text-sm text-gray-600">{recommendation.rating}</span>
+                  <Star className="w-4 h-4 text-accent-amber fill-current" />
+                  <span className="text-sm text-warm-700">{recommendation.rating}</span>
                 </div>
               </div>
 
-              <p className="text-gray-600 text-sm mb-4">{recommendation.description}</p>
+              <p className="text-warm-800 text-sm mb-4">{recommendation.description}</p>
 
               {/* Items */}
               <div className="mb-4">
-                <p className="text-xs font-medium text-gray-500 mb-2">INCLUDES:</p>
+                <p className="text-xs font-medium text-gray-500 mb-2">Includes:</p>
                 <div className="flex flex-wrap gap-1">
                   {recommendation.items.map((item, idx) => (
                     <span
                       key={idx}
-                      className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                      className="px-2 py-1 bg-warm-100 text-warm-900 text-xs rounded-full transition-base hover:bg-warm-200"
                     >
                       {item}
                     </span>
@@ -200,14 +194,14 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
               {/* Actions */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <span className="text-lg font-bold text-gray-900">${recommendation.price}</span>
-                  <span className="text-sm text-gray-500">{recommendation.likes} likes</span>
+                  <span className="text-lg font-bold text-warm-900">${recommendation.price}</span>
+                  <span className="text-sm text-warm-700">{recommendation.likes} likes</span>
                 </div>
                 <div className="flex space-x-2">
-                  <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                  <button className="p-2 text-warm-400 hover:text-warm-600 transition-base hover-scale">
                     <Eye className="w-5 h-5" />
                   </button>
-                  <button className="btn-primary flex items-center space-x-2">
+                  <button className="btn-primary flex items-center space-x-2 hover-scale">
                     <ShoppingBag className="w-4 h-4" />
                     <span>Try On</span>
                   </button>
@@ -223,19 +217,20 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
   const renderChatTab = () => (
     <div className="space-y-6">
       {/* Style Preferences */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-warm-200">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Style Preferences</h3>
-        <div className="flex space-x-3 overflow-x-auto pb-2">
+        <div className="flex flex-wrap gap-3 pb-2">
           {styleOptions.map((style) => (
             <button
               key={style.id}
               onClick={() => setSelectedStyle(style.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${selectedStyle === style.id
-                  ? 'bg-primary-100 text-primary-700 border border-primary-300'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-base border
+                ${selectedStyle === style.id
+                  ? 'bg-warm-100 border-warm-300 text-warm-700 shadow-warm-md scale-105'
+                  : 'bg-white border-warm-200 text-warm-500 hover:bg-warm-50 hover:text-warm-700'}
+              `}
             >
-              <span className={`w-3 h-3 rounded-full mr-2 ${styleColors[style.id]}`}></span>
+              <style.icon className={`w-5 h-5 ${selectedStyle === style.id ? 'text-warm-400' : 'text-warm-300'}`} />
               <span className="font-medium">{style.label}</span>
             </button>
           ))}

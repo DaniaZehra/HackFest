@@ -63,26 +63,26 @@ export default function VirtualWardrobe() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">Virtual Wardrobe</h2>
           <p className="text-gray-600 mt-2">Manage and organize your clothing collection</p>
         </div>
-        <button className="btn-primary flex items-center space-x-2">
+        <button className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
           <Plus className="w-5 h-5" />
           <span>Add Item</span>
         </button>
       </div>
 
       {/* Upload Area */}
-      <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 border-dashed">
+      <div className="p-8 border-dashed rounded-2xl bg-[white] shadow-md">
         <div className="text-center">
-          <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Your Clothes</h3>
-          <p className="text-gray-600 mb-4">
+          <Upload className="w-12 h-12 text-blue-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-blue-900 mb-2">Upload Your Clothes</h3>
+          <p className="text-blue-700 mb-4">
             Take photos of your clothing items to build your virtual wardrobe
           </p>
-          <button className="btn-primary">
+          <button className="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 text-white font-semibold shadow-md transition-all duration-300">
             Upload Photos
           </button>
         </div>
@@ -90,7 +90,7 @@ export default function VirtualWardrobe() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Items</p>
@@ -101,18 +101,18 @@ export default function VirtualWardrobe() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Categories</p>
-              <p className="text-2xl font-bold text-gray-900">{categories.length - 1}</p>
+              <p className="text-2xl font-bold text-gray-900">3</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
               <Filter className="w-6 h-6 text-green-600" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Recently Worn</p>
@@ -123,7 +123,7 @@ export default function VirtualWardrobe() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-md p-6 hover-scale">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Outfit Ideas</p>
@@ -137,21 +137,21 @@ export default function VirtualWardrobe() {
       </div>
 
       {/* Category Filter */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+      <div className="card-warm">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
-        <div className="flex space-x-3 overflow-x-auto pb-2">
+        <div className="flex flex-wrap gap-3 pb-2">
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
-                selectedCategory === category.id
-                  ? 'bg-primary-100 text-primary-700 border border-primary-300'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-base border
+                ${selectedCategory === category.id
+                  ? 'bg-warm-100 border-warm-300 text-warm-700 shadow-warm-md scale-105'
+                  : 'bg-white border-blue-100 text-blue-500 hover:bg-blue-50 hover:text-blue-700'}
+              `}
             >
               <span className="font-medium">{category.label}</span>
-              <span className="text-xs bg-gray-200 px-2 py-1 rounded-full">{category.count}</span>
+              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">{category.count}</span>
             </button>
           ))}
         </div>
@@ -162,7 +162,7 @@ export default function VirtualWardrobe() {
         {filteredItems.map((item, index) => (
           <div
             key={item.id}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+            className="card-warm overflow-hidden hover:shadow-lg hover-scale transition-base"
           >
             {/* Image */}
             <div className="relative h-48 overflow-hidden">
@@ -172,10 +172,10 @@ export default function VirtualWardrobe() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-2 right-2 flex space-x-1">
-                <button className="p-1 bg-white/80 rounded-full hover:bg-white transition-colors">
-                  <Edit className="w-4 h-4 text-gray-600" />
+                <button className="p-1 bg-white/80 rounded-full hover:bg-warm-100 transition-base hover-scale">
+                  <Edit className="w-4 h-4 text-warm-500" />
                 </button>
-                <button className="p-1 bg-white/80 rounded-full hover:bg-white transition-colors">
+                <button className="p-1 bg-white/80 rounded-full hover:bg-warm-100 transition-base hover-scale">
                   <Trash2 className="w-4 h-4 text-red-600" />
                 </button>
               </div>
@@ -183,7 +183,7 @@ export default function VirtualWardrobe() {
 
             {/* Content */}
             <div className="p-4">
-              <h3 className="font-semibold text-gray-900 mb-2">{item.name}</h3>
+              <h3 className="font-semibold text-warm-900 mb-2">{item.name}</h3>
               
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
