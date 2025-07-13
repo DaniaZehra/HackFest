@@ -1,12 +1,18 @@
 from flask import Flask, request, jsonify, send_file
+from recommender import recommend 
 from diffusers import DiffusionPipeline
 from io import BytesIO
 import time
 import torch
 from functools import lru_cache
 import hashlib
+from flask import Flask
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
+
 
 # Load model
 pipe = DiffusionPipeline.from_pretrained(
@@ -26,7 +32,7 @@ prompt_cache = {}
 @lru_cache(maxsize=16)
 def generate_image_bytes(prompt_hash):
     prompt = prompt_cache[prompt_hash]
-    image = pipe(prompt=prompt, num_inference_steps=4, guidance_scale=7.5).images[0]
+    image = pipe(prompt=prompt, num_inference_steps=7, guidance_scale=7.5).images[0]
     img_io = BytesIO()
     image.save(img_io, 'PNG')
     return img_io.getvalue()  # Only store raw bytes
@@ -56,13 +62,26 @@ def generate_image():
         return send_file(
             img_io,
             mimetype='image/png',
-            as_attachment=True,
-            download_name='generated_image.png'
-        )
+             as_attachment=True,
+             download_name='generated_image.png'
+         )
 
     except Exception as e:
-        print("Error:", str(e))
-        return jsonify({"error": str(e)}), 500
+         print("Error:", str(e))
+         return jsonify({"error": str(e)}), 500
+@app.route('/recommend-outfit', methods=['POST'])
+def recommend_outfit():
+    data = request.get_json()
+    wardrobe = data.get("wardrobe")
+    occasion = data.get("occasion")
 
+    if not wardrobe or not occasion:
+        return jsonify({"error": "Both 'wardrobe' and 'occasion' are required"}), 400
+
+    try:
+        result = recommend(wardrobe, occasion)
+        return jsonify({"recommendation": result})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

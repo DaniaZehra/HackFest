@@ -32,6 +32,7 @@ export default function Header({ user }: HeaderProps) {
               type="text"
               placeholder="Search for outfits..."
               className="w-full pl-10 pr-4 py-2 border border-warm-200 rounded-lg focus:ring-2 focus:ring-warm-400 focus:border-transparent transition-base shadow-sm hover:shadow-md"
+
             />
           </div>
         </div>

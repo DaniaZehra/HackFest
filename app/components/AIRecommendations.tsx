@@ -25,6 +25,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
   const [chatMessages, setChatMessages] = useState<{role: 'user' | 'ai', content: string}[]>([])
   const [chatInput, setChatInput] = useState('')
   const [isChatLoading, setIsChatLoading] = useState(false)
+  const [outfitImage, setOutfitImage] = useState<string | null>(null);
 
   const tabs = [
     { id: 'browse', label: 'Browse Recommendations', icon: Eye },
@@ -113,7 +114,32 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
     setChatMessages((prev) => [...prev, userMsg])
     setIsChatLoading(true)
     setChatInput('')
-    // Simulate AI response (replace with API call later)
+    try {
+      const response = await fetch('http://localhost:5000/generate',{
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({prompt: chatInput})
+      }
+      )
+      if(!response.ok){
+        throw new Error('Image generation failed');
+      }
+      const blob = await response.blob()
+      const imageUrl = URL.createObjectURL(blob)
+      setOutfitImage(imageUrl); 
+      console.log(response)
+    }catch(error){
+      const errorMsg = {
+        role: 'ai' as const,
+        content: 'Failed to generate image'
+      };
+      setChatMessages((prev)=>[...prev, errorMsg]);
+    }finally {
+      setIsChatLoading(false)
+    }
+
     setTimeout(() => {
       const aiMsg = { role: 'ai' as const, content: "Here's an AI-generated outfit based on your prompt! (Integration coming soon)" }
       setChatMessages((prev) => [...prev, aiMsg])
@@ -333,13 +359,28 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
       </div>
 
       {/* Visualization Placeholder */}
-      <div className="bg-gray-50 rounded-xl p-6 border border-dashed border-gray-300 text-center">
-        <div className="flex flex-col items-center justify-center space-y-2">
-          <Sparkles className="w-8 h-8 text-purple-400 mb-2" />
-          <span className="text-gray-700 font-medium">Outfit visualizations will appear here after you chat with the AI!</span>
-          <span className="text-xs text-gray-400">(Integrate your model to generate images or outfit cards)</span>
-        </div>
-      </div>
+     <div className="bg-gray-50 rounded-xl p-6 border border-dashed border-gray-300 text-center">
+  {outfitImage ? (
+    <div className="flex flex-col items-center justify-center space-y-4">
+      <img
+        src={outfitImage}
+        alt="Generated outfit"
+        className="rounded-lg max-w-full"
+      />
+      <span className="text-sm text-gray-500">Here’s your AI-generated outfit!</span>
+    </div>
+  ) : (
+    <div className="flex flex-col items-center justify-center space-y-2">
+      <Sparkles className="w-8 h-8 text-purple-400 mb-2" />
+      <span className="text-gray-700 font-medium">
+        Outfit visualizations will appear here after you chat with the AI!
+      </span>
+      <span className="text-xs text-gray-400">
+        (Integrate your model to generate images or outfit cards)
+      </span>
+    </div>
+  )}
+</div>
     </div>
   )
 
