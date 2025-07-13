@@ -105,14 +105,57 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
     selectedOccasion === 'all' || rec.category === selectedOccasion
   )
 
-  const handleGenerate = () => {
-    if (!prompt.trim()) return
-    setIsGenerating(true)
-    // Simulate AI generation
-    setTimeout(() => {
-      setIsGenerating(false)
-    }, 3000)
+  const handleGenerate = async () => {
+  if (!prompt.trim()) return;
+
+  setIsGenerating(true);
+
+  try {
+    // Expecting format: "white shirt, jeans, sandals for a party"
+    console.log(prompt)
+    const [wardrobeText, occasionText] = prompt.toLowerCase().split(' for ');
+    const wardrobeItems = wardrobeText
+      .split(',')
+      .map(item => item.trim())
+      .filter(item => item);
+
+    const response = await fetch('http://localhost:5000/recommend-outfit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        wardrobe: wardrobeItems,
+        occasion: occasionText?.trim() || '',
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data)
+    const aiMsg = {
+      role: 'ai' as const,
+      content: data.recommendation || 'Sorry, I couldn’t generate an outfit right now.',
+    };
+
+    // Push both user prompt and AI response into chat
+    setChatMessages((prev) => [
+      ...prev,
+      { role: 'user', content: prompt },
+      aiMsg,
+    ]);
+
+    setPrompt(''); // Clear textarea after generation
+  } catch (err) {
+    console.error(err);
+    setChatMessages((prev) => [
+      ...prev,
+      { role: 'ai', content: 'An error occurred while getting the recommendation.' },
+    ]);
+  } finally {
+    setIsGenerating(false);
   }
+};
+
 
   // Handler for sending chat message
   const handleSendChat = async () => {
@@ -303,11 +346,34 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
                   ) : (
                     <>
                       <Wand2 className="w-4 h-4" />
-                      <span>Generate Outfit</span>
+                      <span>Get Outfit Recommendations</span>
                     </>
                   )}
                 </button>
               </div>
+              {chatMessages.length > 0 && (
+  <div className="mt-6 max-h-72 overflow-y-auto space-y-3 pr-2">
+    {chatMessages.map((msg, index) => (
+      <div
+        key={index}
+        className={`flex ${
+          msg.role === 'user' ? 'justify-end' : 'justify-start'
+        } animate-fade-in`}
+      >
+        <div
+          className={`max-w-xs md:max-w-md p-3 rounded-2xl text-sm shadow-sm ${
+            msg.role === 'user'
+              ? 'bg-gray-200 text-gray-900 rounded-br-none'
+              : 'bg-primary-100 text-primary-900 rounded-bl-none'
+          }`}
+        >
+          <p className="whitespace-pre-wrap">{msg.content}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
             </div>
           </div>
         </div>
