@@ -51,8 +51,12 @@ npm install
 ```bash
 npm run dev
 ```
+4. For backend run command:
+```bash
+pip install -r requirements.txt
+```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Tech Stack
 
@@ -69,6 +73,10 @@ npm run dev
 
 ```
 fashion-recommender/
+|──backend/
+│   ├──app.py
+│   ├──recommender.py
+│   ├──.env
 ├── app/
 │   ├── components/
 │   │   ├── Sidebar.tsx          # Navigation sidebar
