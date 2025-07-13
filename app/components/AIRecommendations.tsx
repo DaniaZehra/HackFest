@@ -302,7 +302,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g., 'I need an outfit for a summer wedding with a bohemian vibe' or 'Help me style my new floral dress for a date night'"
+                placeholder="e.g., 'I need an outfit for a summer wedding and I need already have a red dress and a white dress. Which one should I go for?'"
                 className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                 rows={3}
               />
@@ -478,25 +478,7 @@ export default function AIRecommendations({ user }: AIRecommendationsProps) {
 
       {/* Tab Content */}
       {renderContent()}
-
-      {/* AI Insights */}
-      <div className="bg-gradient-to-r from-purple-50 to-primary-50 rounded-xl p-6 border border-purple-200">
-        <div className="flex items-start space-x-4">
-          <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-            <Sparkles className="w-6 h-6 text-purple-600" />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Style Analysis</h3>
-            <p className="text-gray-700 mb-3">
-              Based on your {user.style} preferences and ${user.budget} budget, I've curated these looks that
-              perfectly match your aesthetic. Your style confidence has increased by 15% this month!
-            </p>
-            <button className="btn-primary">
-              Get More Recommendations
-            </button>
-          </div>
-        </div>
-      </div>
+      
     </div>
   )
 } 
